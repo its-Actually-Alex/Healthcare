@@ -29,13 +29,23 @@ namespace CLI.Healthcare
                         patient.Name = Console.ReadLine();
                         Console.WriteLine("Enter the patient's address (F/L): ");
                         patient.Address = Console.ReadLine();
+                        var maxId = -1;
+                        if(patients.Any())
+                        {
+                            maxId = patients.Select(p => p?.Id ?? -1).Max();
+                        }
+                        else
+                        {
+                            maxId = 0;
+                        }
+                        patient.Id = ++maxId;
                         patients.Add(patient);
                         break;
                     case "V":
                     case "v":
                         foreach(var p in patients)
                         {
-                            Console.WriteLine(patients[p]);
+                            Console.WriteLine($"{p?.Id}: {p}");
                         }
                         break;
                     case "D":
