@@ -25,15 +25,17 @@ namespace CLI.Healthcare
                     case "C":
                     case "c":
                         var patient = new Patient();
+                        Console.WriteLine("Enter the patient's name (F/L): ");
                         patient.Name = Console.ReadLine();
+                        Console.WriteLine("Enter the patient's address (F/L): ");
                         patient.Address = Console.ReadLine();
                         patients.Add(patient);
                         break;
-                    case "R":
-                    case "r":
+                    case "V":
+                    case "v":
                         foreach(var p in patients)
                         {
-                            Console.WriteLine($"({p?.Length}) {p}");
+                            Console.WriteLine(patients[p]);
                         }
                         break;
                     case "D":
