@@ -8,6 +8,7 @@ namespace CLI.Healthcare
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to the healthcare thingy!");
+            var cont = true;
 
             List<Patient?> patients = new List<Patient?>();
 
@@ -43,22 +44,34 @@ namespace CLI.Healthcare
                         break;
                     case "V":
                     case "v":
-                        foreach(var p in patients)
-                        {
-                            Console.WriteLine($"{p?.Id}: {p}");
-                        }
+                        patients.ForEach(p => Console.WriteLine($"{p?.Id}: {p}"));
                         break;
                     case "D":
                     case "d":
+                        //Give the user options for deletion
+                        patients.ForEach(Console.WriteLine);
+                        Console.WriteLine("Patient to Delete (ID): ");
+
+                        //Get user selection and convert to int
+                        var selection = Console.ReadLine();
+                        if (int.TryParse(selection ?? "-1", out int intSelection))
+                        {
+                            //Find and remove the patient
+                            var patientToDelete = patients
+                                .Where(p => p != null)
+                                .FirstOrDefault(p => p.Id == intSelection);
+                            patients.Remove(patientToDelete);
+                        }
                         break;
                     case "Q":
                     case "q":
+                        cont = false;
                         break;
                     default:
                         Console.WriteLine("Invalid Command!");
                         break;
                 }
-            } while (true);
+            } while (cont);
         }
     }
 }
