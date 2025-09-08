@@ -58,6 +58,7 @@ namespace CLI.Healthcare
                         {
                             //Find and remove the patient
                             var patientToDelete = patients
+                                //Disregard null
                                 .Where(p => p != null)
                                 .FirstOrDefault(p => p.Id == intSelection);
                             patients.Remove(patientToDelete);
