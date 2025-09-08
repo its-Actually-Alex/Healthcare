@@ -27,7 +27,7 @@ namespace CLI.Healthcare
                         var patient = new Patient();
                         Console.WriteLine("Enter the patient's name (F/L): ");
                         patient.Name = Console.ReadLine();
-                        Console.WriteLine("Enter the patient's address (F/L): ");
+                        Console.WriteLine("Enter the patient's address: ");
                         patient.Address = Console.ReadLine();
                         var maxId = -1;
                         if(patients.Any())
