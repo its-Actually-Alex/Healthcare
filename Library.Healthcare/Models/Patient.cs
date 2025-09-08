@@ -1,4 +1,6 @@
-﻿namespace Library.Healthcare.Models
+﻿using Library.Healthcare.Models;
+
+namespace Library.Healthcare.Models
 {
     public class Patient
     {
@@ -9,9 +11,20 @@
         public int? Age { get; set; }
         public int Id { get; set; }
 
+        public List<Diagnosis> Diagnoses { get; set; } = new List<Diagnosis> { };
+
         public override string ToString()
         {
-            return $"Name: {Name}\nAddress: {Address}";
+            return $"{Name}";
+        }
+
+        public void DetailedView()
+        {
+            var diagnosisText = Diagnoses.Any()
+            ? string.Join("\n ", Diagnoses)
+            : "No recent diagnoses";
+            Console.WriteLine($"ID: {Id}\nName: {Name}\nAddress: {Address}\nAge: {Age}\n" +
+                $"Birthdate: {Birthdate}\nGender: {Gender}\nRecent Diagnoses:\n{diagnosisText}\n");
         }
     }
 }
