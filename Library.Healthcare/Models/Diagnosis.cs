@@ -12,11 +12,12 @@ namespace Library.Healthcare.Models
         public int PatientId { get; set; }
         public string? Symptoms { get; set; }
         public string? Diagnosis_Given { get; set; }
-        public string? Physian_Diagnosed_By { get; set; }
+        public Physician? Physician_Diagnosed_By { get; set; }
 
         public override string ToString()
         {
-            return $"Symptoms: {Symptoms}\nDiagnosis Given: {Diagnosis_Given}\n";
+            return $"Symptoms: {Symptoms}\nDiagnosis Given: {Diagnosis_Given}\n" +
+                $"Diagnosed By: {Physician_Diagnosed_By}\n";
         }
     }
 }

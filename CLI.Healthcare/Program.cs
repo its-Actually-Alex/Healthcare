@@ -11,12 +11,13 @@ namespace CLI.Healthcare
             var cont = true;
 
             List<Patient?> patients = new List<Patient?>();
+            List<Physician?> physicians = new List<Physician?>();
 
             do
             {
                 Console.WriteLine("C. Create a New Patient Account");
                 Console.WriteLine("P. Create a New Physician Account");
-                Console.WriteLine("V. View Patients");
+                Console.WriteLine("V. View Patients and Physicians");
                 Console.WriteLine("F. Detailed Patient View");
                 Console.WriteLine("D. Write a New Diagnosis");
                 Console.WriteLine("X. Delete a Patient Account");
@@ -28,26 +29,62 @@ namespace CLI.Healthcare
                 {
                     case "C":
                     case "c":
-                        var patient = new Patient();
-                        Console.WriteLine("Enter the patient's name (F/L): ");
-                        patient.Name = Console.ReadLine();
-                        Console.WriteLine("Enter the patient's address: ");
-                        patient.Address = Console.ReadLine();
-                        var maxId = -1;
-                        if(patients.Any())
                         {
-                            maxId = patients.Select(p => p?.Id ?? -1).Max();
+                            var patient = new Patient();
+                            Console.WriteLine("Enter the patient's name (F/L): ");
+                            patient.Name = Console.ReadLine();
+                            Console.WriteLine("Enter the patient's address: ");
+                            patient.Address = Console.ReadLine();
+                            var maxId = -1;
+                            if (patients.Any())
+                            {
+                                maxId = patients.Select(p => p?.Id ?? -1).Max();
+                            }
+                            else
+                            {
+                                maxId = 0;
+                            }
+                            patient.Id = ++maxId;
+                            patients.Add(patient);
+                            break;
                         }
-                        else
+                    case "P":
+                    case "p":
                         {
-                            maxId = 0;
+                            //Create new physician object
+                            var physician = new Physician();
+
+                            //Gather data for physician from user
+                            Console.WriteLine("Enter the physician's name (F/L): ");
+                            physician.Name = Console.ReadLine();
+                            Console.WriteLine("Enter the physician's license number: ");
+                            var license = Console.ReadLine();
+                            physician.License = int.Parse(license ?? "-1");
+                            Console.WriteLine("Enter the physician's graduation date (MM/DD/YYYY): ");
+                            physician.GraduationDate = Console.ReadLine();
+                            Console.WriteLine("Provide the physician's specializations: ");
+                            physician.Specialization = Console.ReadLine();
+
+                            //Create an ID for the physician
+                            var maxId = -1;
+                            if (physicians.Any())
+                            {
+                                maxId = physicians.Select(p => p?.Id ?? -1).Max();
+                            }
+                            else
+                            {
+                                maxId = 0;
+                            }
+                            physician.Id = ++maxId;
+                            physicians.Add(physician);
+                            break;
                         }
-                        patient.Id = ++maxId;
-                        patients.Add(patient);
-                        break;
                     case "V":
                     case "v":
-                        patients.ForEach(p => Console.WriteLine($"{p?.Id}: {p}"));
+                        Console.WriteLine("PATIENTS");
+                        patients.ForEach(p => Console.WriteLine($"{p?.Id}. {p}"));
+                        Console.WriteLine("\nPHYSICIANS");
+                        physicians.ForEach(p => Console.WriteLine($"{p?.Id}. {p}"));
                         break;
                     case "D":
                     case "d":
@@ -67,9 +104,9 @@ namespace CLI.Healthcare
                                 if (patientToDiagnose != null)
                                 {
                                     //Gather diagnosis details
-                                    Console.WriteLine("State Patient's Symptoms: ");
+                                    Console.WriteLine("State patient's symptoms: ");
                                     var symp = Console.ReadLine();
-                                    Console.WriteLine("State Diagnosis: ");
+                                    Console.WriteLine("State diagnosis: ");
                                     var diag = Console.ReadLine();
 
                                     //Create diagnosis
@@ -77,6 +114,21 @@ namespace CLI.Healthcare
                                     currentDiag.Symptoms = symp;
                                     currentDiag.Diagnosis_Given = diag;
                                     currentDiag.PatientId = patientToDiagnose.Id;
+
+                                    //Add a physician to diagnosis
+                                    Console.WriteLine("Enter diagnosing physician's ID: ");
+                                    var pSelection = Console.ReadLine();
+                                    if (int.TryParse(selection ?? "-1", out int pintSelection))
+                                    {
+                                        Physician? diagnoser = physicians
+                                            .Where(p => p != null)
+                                            .FirstOrDefault(p => p?.Id == pintSelection);
+
+                                        if (diagnoser != null)
+                                            currentDiag.Physician_Diagnosed_By = diagnoser;
+                                        else
+                                            Console.WriteLine("Physician not found!");
+                                    }
 
                                     //Add diagnosis to patient's account
                                     patientToDiagnose.Diagnoses.Add(currentDiag);
