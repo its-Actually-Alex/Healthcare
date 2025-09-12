@@ -1,5 +1,7 @@
 ﻿using Library.Healthcare.Models;
+using Library.Healthcare.Services;
 using System;
+using System.Globalization;
 
 namespace CLI.Healthcare
 {
@@ -10,7 +12,7 @@ namespace CLI.Healthcare
             Console.WriteLine("Welcome to the healthcare thingy!");
             var cont = true;
 
-            List<Patient?> patients = new List<Patient?>();
+            List<Patient?> patients = PatientServiceProxy.Current.Patients;
             List<Physician?> physicians = new List<Physician?>();
 
             do
@@ -20,6 +22,7 @@ namespace CLI.Healthcare
                 Console.WriteLine("V. View Patients and Physicians");
                 Console.WriteLine("F. Detailed Patient View");
                 Console.WriteLine("D. Write a New Diagnosis");
+                Console.WriteLine("A. Create an Appointment");
                 Console.WriteLine("X. Delete a Patient Account");
                 Console.WriteLine("Q. Quit");
 
@@ -35,17 +38,7 @@ namespace CLI.Healthcare
                             patient.Name = Console.ReadLine();
                             Console.WriteLine("Enter the patient's address: ");
                             patient.Address = Console.ReadLine();
-                            var maxId = -1;
-                            if (patients.Any())
-                            {
-                                maxId = patients.Select(p => p?.Id ?? -1).Max();
-                            }
-                            else
-                            {
-                                maxId = 0;
-                            }
-                            patient.Id = ++maxId;
-                            patients.Add(patient);
+                            PatientServiceProxy.Current.Create(patient);
                             break;
                         }
                     case "P":
@@ -82,7 +75,7 @@ namespace CLI.Healthcare
                     case "V":
                     case "v":
                         Console.WriteLine("PATIENTS");
-                        patients.ForEach(p => Console.WriteLine($"{p?.Id}. {p}"));
+                        PatientServiceProxy.Current.Patients.ForEach(p => Console.WriteLine($"{p?.Id}. {p}"));
                         Console.WriteLine("\nPHYSICIANS");
                         physicians.ForEach(p => Console.WriteLine($"{p?.Id}. {p}"));
                         break;
@@ -135,6 +128,45 @@ namespace CLI.Healthcare
                                 }
                                 else
                                     Console.WriteLine("Patient not found!");
+                            }
+                            break;
+                        }
+                    case "A":
+                    case "a":
+                        {
+                            Console.WriteLine("Enter appointment physician's ID: ");
+                            var pSelection = Console.ReadLine();
+                            if (int.TryParse(pSelection ?? "-1", out int pintSelection))
+                            {
+                                Physician? appPhysician = physicians
+                                    .Where(p => p != null)
+                                    .FirstOrDefault(p => p?.Id == pintSelection);
+
+                                if (appPhysician != null)
+                                {
+                                    Console.WriteLine("Enter appointment time (mm/dd/yyyy hh:mm)");
+                                    string t = Console.ReadLine();
+
+                                    if(DateTime.TryParseExact(t, "MM/dd/yyyy HH:mm",
+                                                              CultureInfo.InvariantCulture,
+                                                              DateTimeStyles.None,
+                                                              out DateTime result))
+                                    {
+                                        foreach(Appointment a in appPhysician.Appointments)
+                                        {
+                                            if(a.Time == result)
+                                            {
+                                                Console.WriteLine("Physician already has appointment at that time.");
+                                                break;
+                                            }
+                                        }
+                                        Appointment app = new Appointment();
+                                        app.Time = result;
+                                        appPhysician.Appointments.Add(app);
+                                    }
+                                }
+                                else
+                                    Console.WriteLine("Physician not found!");
                             }
                             break;
                         }

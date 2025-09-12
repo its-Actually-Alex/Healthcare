@@ -13,6 +13,7 @@ namespace Library.Healthcare.Models
         public int License { get; set; }
         public string? GraduationDate { get; set; }
         public string? Specialization {  get; set; }
+        public List<Appointment> Appointments = new List<Appointment>();
 
         public override string ToString()
         {
