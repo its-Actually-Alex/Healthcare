@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI.Healthcare", "CLI.Healt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Healthcare", "Library.Healthcare\Library.Healthcare.csproj", "{BD8D99A1-741C-4492-8D7D-334560353ED7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maui.Healthcare", "Maui.Healthcare\Maui.Healthcare.csproj", "{6B2180F0-3CD7-4C15-86CD-4E632B722BD8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,12 @@ Global
 		{BD8D99A1-741C-4492-8D7D-334560353ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD8D99A1-741C-4492-8D7D-334560353ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD8D99A1-741C-4492-8D7D-334560353ED7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B2180F0-3CD7-4C15-86CD-4E632B722BD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B2180F0-3CD7-4C15-86CD-4E632B722BD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B2180F0-3CD7-4C15-86CD-4E632B722BD8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6B2180F0-3CD7-4C15-86CD-4E632B722BD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B2180F0-3CD7-4C15-86CD-4E632B722BD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B2180F0-3CD7-4C15-86CD-4E632B722BD8}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

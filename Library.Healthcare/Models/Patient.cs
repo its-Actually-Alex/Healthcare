@@ -11,6 +11,14 @@ namespace Library.Healthcare.Models
         public int? Age { get; set; }
         public int Id { get; set; }
 
+        public string Display
+        {
+            get
+            {
+                return ToString();
+            }
+        }
+
         public List<Diagnosis> Diagnoses { get; set; } = new List<Diagnosis> { };
 
         public override string ToString()
