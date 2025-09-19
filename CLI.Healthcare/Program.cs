@@ -145,7 +145,7 @@ namespace CLI.Healthcare
                                 if (appPhysician != null)
                                 {
                                     Console.WriteLine("Enter appointment time (mm/dd/yyyy hh:mm)");
-                                    string t = Console.ReadLine();
+                                    string? t = Console.ReadLine();
 
                                     if(DateTime.TryParseExact(t, "MM/dd/yyyy HH:mm",
                                                               CultureInfo.InvariantCulture,
@@ -160,7 +160,7 @@ namespace CLI.Healthcare
                                                 break;
                                             }
                                         }
-                                        Appointment app = new Appointment();
+                                        Appointment app = new();
                                         app.Time = result;
                                         appPhysician.Appointments.Add(app);
                                     }

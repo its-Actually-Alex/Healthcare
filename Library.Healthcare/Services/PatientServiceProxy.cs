@@ -16,14 +16,18 @@ public class PatientServiceProxy
     }
 
     private static PatientServiceProxy? instance;
+    private static object instanceLock = new object();
 
     public static PatientServiceProxy Current
     {
         get
         {
-            if(instance == null)
+            lock(instanceLock)
             {
-                instance = new PatientServiceProxy();
+                if (instance == null)
+                {
+                    instance = new PatientServiceProxy();
+                }
             }
 
             return instance;
