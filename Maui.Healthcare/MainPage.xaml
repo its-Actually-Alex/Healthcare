@@ -1,51 +1,122 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Maui.Healthcare.MainPage">
+             x:Class="Maui.Healthcare.MainPage"
+             NavigatedTo="ContentPage_NavigatedTo"
+             >
 
     <ScrollView>
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
 
+            <!-- HEADER -->
             <Label
-                Text="Generic Healthcare App"
+                Text="Generic Healthcare Application"
                 Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1" />
+                SemanticProperties.HeadingLevel="Level1" 
+            />
 
+            <!-- SEARCH BAR -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Entry Grid.Column="0" Text="{Binding Query}"/>
+                <Button Grid.Column="1" Text="Search" Clicked="SearchClicked"/>
+            </Grid>
+
+            <!-- PATIENT LIST -->
+            <Label
+                Text="Patients"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level2" 
+            />
             <ListView
                 ItemsSource="{Binding Patients}"
                 SelectedItem="{Binding SelectedPatient}"
-            >
+                >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5*">
-                                        
-                                    </ColumnDefinition>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <Label Text="{Binding Display}" Grid.Column="0"/>
+                                <Label Text="{Binding Model.Display}" Grid.Column="0"/>
                                 <Grid Grid.Column="1">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition>
-                                        </ColumnDefinition>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <Button Text="Edit" Grid.Column="0"/>
-                                    <Button Text="Delete" Grid.Column="1"/>
+                                    <Button Text="Edit" Grid.Column="0" Command="{Binding EditCommand}" CommandParameter="{Binding}"/>
+                                    <Button Text="Delete" Grid.Column="1" Clicked="InlineEditClicked" Command="{Binding DeleteCommand}" CommandParameter="{Binding}"/>
                                 </Grid>
+
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Button 
-                Text="Add" 
-                Clicked="AddClicked" 
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Text="Add" Clicked="PatientAddClicked"/>
+                <Button Grid.Column="1" Text="Edit" Clicked="PatientEditClicked"/>
+            </Grid>
+
+            <!--PHYSICIAN LIST-->
+            <Label
+                Text="Physicians"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level2" 
             />
+            <ListView
+                ItemsSource="{Binding Physicians}"
+                SelectedItem="{Binding SelectedPhysician}"
+                >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Model.Display}" Grid.Column="0"/>
+                                <Grid Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Text="Edit" Grid.Column="0" Command="{Binding EditCommand}" CommandParameter="{Binding}"/>
+                                    <Button Text="Delete" Grid.Column="1" Clicked="InlineEditClicked" Command="{Binding DeleteCommand}" CommandParameter="{Binding}"/>
+                                </Grid>
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Text="Add" Clicked="PhysicianAddClicked"/>
+                <Button Grid.Column="1" Text="Edit" Clicked="PhysicianEditClicked"/>
+            </Grid>
         </VerticalStackLayout>
+
     </ScrollView>
 
 </ContentPage>

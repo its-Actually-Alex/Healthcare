@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Maui.Healthcare.Views.PhysicianView"
+             Title="PhysicianView"
+             NavigatedTo="ContentPage_NavigatedTo">
+    <VerticalStackLayout>
+        <Label
+            Text="Add A New Physician"
+            Style="{StaticResource Headline}"
+            SemanticProperties.HeadingLevel="Level1" 
+        />
+
+        <Label Text="Name"/>
+        <Entry Text="{Binding Name}"/>
+        <Label Text="License Number"/>
+        <Entry Text="{Binding License}"/>
+        <Label Text="Graduation Date"/>
+        <Entry Text="{Binding GraduationDate}"/>
+        <Label Text="Specialization"/>
+        <Entry Text="{Binding Specialization}"/>
+        <Button Text="OK" Clicked="OkClicked"/>
+        <Button Text="Cancel" Clicked="CancelClicked"/>
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Maui.Healthcare.Views.PatientView"
+             Title="PatientView"
+             NavigatedTo="ContentPage_NavigatedTo">
+    <VerticalStackLayout>
+        <Label
+            Text="Add A New Patient"
+            Style="{StaticResource Headline}"
+            SemanticProperties.HeadingLevel="Level1" 
+        />
+        
+        <Label Text="Name"/>
+        <Entry Text="{Binding Name}"/>
+        <Label Text="Address"/>
+        <Entry Text="{Binding Address}"/>
+        <Label Text="Birthdate"/>
+        <Entry Text="{Binding Birthdate}"/>
+        <Label Text="Gender (M/F)"/>
+        <Entry Text="{Binding Gender}"/>
+
+
+        <Label 
+                Text="Diagnoses" 
+                FontSize="18"
+                FontAttributes="Bold"/>
+        <ListView
+            ItemsSource="{Binding Diagnoses}"
+        >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label 
+                                Text="{Binding}" 
+                                Grid.Column="0"
+                                VerticalOptions="Center"/>
+
+                            <Button Text="Remove" Grid.Column="1" Clicked="RemoveDiagnosisClicked"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Frame BackgroundColor="#d4d4d4" Padding="10">
+            <StackLayout>
+                <Label Text="Add New Diagnosis"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Entry
+                        Grid.Column="0"
+                        Text="{Binding NewDiagnosis}"/>
+
+                    <Button
+                        Text="Add"
+                        Grid.Column="1"
+                        Clicked="AddDiagnosisClicked"/>
+                </Grid>
+            </StackLayout>
+        </Frame>
+
+        <Button Text="OK" Clicked="OkClicked"/>
+        <Button Text="Cancel" Clicked="CancelClicked"/>
+    </VerticalStackLayout>
+</ContentPage>

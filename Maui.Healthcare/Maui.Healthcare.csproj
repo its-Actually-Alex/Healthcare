@@ -66,4 +66,19 @@
 	  <ProjectReference Include="..\Library.Healthcare\Library.Healthcare.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="Views\PhysicianView.xaml.cs">
+	    <DependentUpon>PhysicianView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\PhysicianView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\PatientView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
 ﻿using Library.Healthcare.Models;
+using Library.Healthcare.Services;
 
 namespace Library.Healthcare.Models
 {
@@ -8,7 +9,6 @@ namespace Library.Healthcare.Models
         public string? Address { get; set; }
         public string? Birthdate { get; set; }
         public char? Gender { get; set; }
-        public int? Age { get; set; }
         public int Id { get; set; }
 
         public string Display
@@ -31,8 +31,27 @@ namespace Library.Healthcare.Models
             var diagnosisText = Diagnoses.Any()
             ? string.Join("\n ", Diagnoses)
             : "No recent diagnoses";
-            Console.WriteLine($"ID: {Id}\nName: {Name}\nAddress: {Address}\nAge: {Age}\n" +
+            Console.WriteLine($"ID: {Id}\nName: {Name}\nAddress: {Address}\n" +
                 $"Birthdate: {Birthdate}\nGender: {Gender}\nRecent Diagnoses:\n{diagnosisText}\n");
+        }
+
+        public Patient()
+        {
+
+        }
+
+        public Patient(int id)
+        {
+            var patCopy = PatientServiceProxy.Current.Patients.FirstOrDefault(b => (b?.Id ?? 0) == id);
+
+            if(patCopy != null)
+            {
+                Id = patCopy.Id;
+                Name = patCopy.Name;
+                Address = patCopy.Address;
+                Birthdate = patCopy.Birthdate;
+                Gender = patCopy.Gender;
+            }
         }
     }
 }

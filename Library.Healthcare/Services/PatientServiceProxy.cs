@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,33 +43,56 @@ public class PatientServiceProxy
         }
     }
 
-    public Patient Create(Patient? patient)
+    public Patient? AddOrUpdate(Patient? pat)
     {
-        if (patient != null)
-        { 
+        if (pat == null)
+        {
+            return null;
+        }
+
+        if (pat.Id <= 0)
+        {
             var maxId = -1;
             if (patients.Any())
             {
-                maxId = patients.Select(p => p?.Id ?? -1).Max();
+                maxId = patients.Select(b => b?.Id ?? -1).Max();
             }
             else
             {
                 maxId = 0;
             }
-            patient.Id = ++maxId;
-            patients.Add(patient);
+            pat.Id = ++maxId;
+            patients.Add(pat);
         }
-        return patient;
+        else
+        {
+            var blogToEdit = Patients.FirstOrDefault(b => (b?.Id ?? 0) == pat.Id);
+            if (blogToEdit != null)
+            {
+                var index = Patients.IndexOf(blogToEdit);
+                Patients.RemoveAt(index);
+                patients.Insert(index, pat);
+            }
+        }
+        return pat;
     }
 
     public Patient? Delete(int id)
     {
         var patientToDelete = patients
                               .Where(p => p != null)
-                              .FirstOrDefault(p => p.Id == id);
+                              .FirstOrDefault(p => (p?.Id ?? -1) == id);
         patients.Remove(patientToDelete);
 
         return patientToDelete;
+    }
+
+    public void AddDiagnosis(Patient pat, Diagnosis diagnosis)
+    {
+        if (diagnosis != null)
+        {
+            pat.Diagnoses.Add(diagnosis);
+        }
     }
 
 }
