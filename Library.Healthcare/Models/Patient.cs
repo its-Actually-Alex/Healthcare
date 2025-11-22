@@ -1,5 +1,6 @@
 ﻿using Library.Healthcare.Models;
 using Library.Healthcare.Services;
+using Library.Healthcare.DTO;
 
 namespace Library.Healthcare.Models
 {
@@ -38,6 +39,15 @@ namespace Library.Healthcare.Models
         public Patient()
         {
 
+        }
+
+        public Patient(PatientDTO patientDto)
+        {
+            Name = patientDto.Name;
+            Address = patientDto.Address;
+            Birthdate = patientDto.Birthdate;
+            Gender = patientDto.Gender;
+            Id = patientDto.Id;
         }
 
         public Patient(int id)

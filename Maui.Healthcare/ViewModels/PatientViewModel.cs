@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Library.Healthcare.DTO;
 
 namespace Maui.Healthcare.ViewModels
 {
@@ -13,11 +14,11 @@ namespace Maui.Healthcare.ViewModels
     {
         public PatientViewModel()
         {
-            Model = new Patient();
+            Model = new PatientDTO();
             SetUpCommands();
         }
 
-        public PatientViewModel(Patient? model)
+        public PatientViewModel(PatientDTO? model)
         {
             Model = model;
             SetUpCommands();
@@ -48,7 +49,7 @@ namespace Maui.Healthcare.ViewModels
             Shell.Current.GoToAsync($"//Patient?patientId={selectedId}");
         }
 
-        public Patient? Model { get; set; }
+        public PatientDTO? Model { get; set; }
 
         public ICommand? DeleteCommand { get; set; }
         public ICommand EditCommand { get; set; }

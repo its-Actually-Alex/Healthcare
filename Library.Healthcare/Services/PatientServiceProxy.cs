@@ -1,29 +1,33 @@
-﻿using Library.Healthcare.Models;
+﻿using Library.Healthcare.Data;
+using Library.Healthcare.DTO;
+using Library.Healthcare.Models;
+using Library.Healthcare.Utilities;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
+using System.ComponentModel;
 using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Library.Healthcare.Services;
+
 public class PatientServiceProxy
 {
-    private List<Patient?> patients;
+    private List<PatientDTO?> patients;
     private PatientServiceProxy()
     {
-        patients = new List<Patient?>();
+        patients = new List<PatientDTO?>();
+        var patientsResponse = new WebRequestHandler().Get("/Patient").Result;
+        if (patientsResponse != null)
+        {
+            patients = JsonConvert.DeserializeObject<List<PatientDTO?>>(patientsResponse) ?? new List<PatientDTO?>();
+        }
     }
-
     private static PatientServiceProxy? instance;
     private static object instanceLock = new object();
-
     public static PatientServiceProxy Current
     {
         get
         {
-            lock(instanceLock)
+            lock (instanceLock)
             {
                 if (instance == null)
                 {
@@ -35,7 +39,7 @@ public class PatientServiceProxy
         }
     }
 
-    public List<Patient?> Patients
+    public List<PatientDTO?> Patients
     {
         get
         {
@@ -43,33 +47,26 @@ public class PatientServiceProxy
         }
     }
 
-    public Patient? AddOrUpdate(Patient? pat)
+    public async Task<PatientDTO?> AddOrUpdate(PatientDTO? pat)
     {
         if (pat == null)
         {
             return null;
         }
 
+        var patPayload = await new WebRequestHandler().Post("/Patient", pat);
+        var patFromServer = JsonConvert.DeserializeObject<PatientDTO>(patPayload);
+
         if (pat.Id <= 0)
         {
-            var maxId = -1;
-            if (patients.Any())
-            {
-                maxId = patients.Select(b => b?.Id ?? -1).Max();
-            }
-            else
-            {
-                maxId = 0;
-            }
-            pat.Id = ++maxId;
-            patients.Add(pat);
+            patients.Add(patFromServer);
         }
         else
         {
-            var blogToEdit = Patients.FirstOrDefault(b => (b?.Id ?? 0) == pat.Id);
-            if (blogToEdit != null)
+            var patientToEdit = Patients.FirstOrDefault(b => (b?.Id ?? 0) == pat.Id);
+            if (patientToEdit != null)
             {
-                var index = Patients.IndexOf(blogToEdit);
+                var index = Patients.IndexOf(patientToEdit);
                 Patients.RemoveAt(index);
                 patients.Insert(index, pat);
             }
@@ -77,22 +74,25 @@ public class PatientServiceProxy
         return pat;
     }
 
-    public Patient? Delete(int id)
+    public PatientDTO? Delete(int id)
     {
+        var response = new WebRequestHandler().Delete($"/Patient/{id}").Result;
+        //get blog object
         var patientToDelete = patients
-                              .Where(p => p != null)
-                              .FirstOrDefault(p => (p?.Id ?? -1) == id);
+            .Where(b => b != null)
+            .FirstOrDefault(b => (b?.Id ?? -1) == id);
+        //delete it!
         patients.Remove(patientToDelete);
 
         return patientToDelete;
     }
 
-    public void AddDiagnosis(Patient pat, Diagnosis diagnosis)
+    public async Task<List<PatientDTO>> Search(QueryRequest query)
     {
-        if (diagnosis != null)
-        {
-            pat.Diagnoses.Add(diagnosis);
-        }
-    }
+        var patPayload = await new WebRequestHandler().Post("/Patient/Search", query);
+        var patFromServer = JsonConvert.DeserializeObject<List<PatientDTO?>>(patPayload);
 
+        patients = patFromServer;
+        return patients;
+    }
 }

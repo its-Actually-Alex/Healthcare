@@ -29,7 +29,7 @@ namespace Maui.Healthcare
 
         private void DeletePatientClicked(object sender, EventArgs e)
         {
-            (BindingContext as MainViewModel)?.DeletePatient();
+            (BindingContext as MainViewModel)?.Delete();
         }
 
         private void PatientEditClicked(object sender, EventArgs e)
@@ -38,11 +38,11 @@ namespace Maui.Healthcare
             Shell.Current.GoToAsync($"//Patient?patientId={selectedId}");
         }
 
-        private void PhysicianEditClicked(object sender, EventArgs e)
+        /*private void PhysicianEditClicked(object sender, EventArgs e)
         {
             var selectedId = (BindingContext as MainViewModel)?.SelectedPhysician?.Model?.Id ?? 0;
             Shell.Current.GoToAsync($"//Physician?physicianId={selectedId}");
-        }
+        }*/
 
         private void InlineEditClicked(object sender, EventArgs e)
         {

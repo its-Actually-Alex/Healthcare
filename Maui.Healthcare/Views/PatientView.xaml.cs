@@ -1,6 +1,7 @@
 namespace Maui.Healthcare.Views;
 using Library.Healthcare.Models;
 using Library.Healthcare.Services;
+using Library.Healthcare.DTO;
 
 [QueryProperty(nameof(PatientId), "patientId")]
 public partial class PatientView : ContentPage
@@ -19,7 +20,7 @@ public partial class PatientView : ContentPage
 
     private void OkClicked(object sender, EventArgs e)
     {
-        PatientServiceProxy.Current.AddOrUpdate(BindingContext as Patient);
+        PatientServiceProxy.Current.AddOrUpdate(BindingContext as PatientDTO);
 
         Shell.Current.GoToAsync("//MainPage");
     }
@@ -38,11 +39,11 @@ public partial class PatientView : ContentPage
     {
         if (PatientId == 0)
         {
-            BindingContext = new Patient();
+            BindingContext = new PatientDTO();
         }
         else
         {
-            BindingContext = new Patient(PatientId);
+            BindingContext = new PatientDTO(PatientId);
         }
     }
 }

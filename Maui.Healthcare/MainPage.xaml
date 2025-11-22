@@ -113,7 +113,6 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Text="Add" Clicked="PhysicianAddClicked"/>
-                <Button Grid.Column="1" Text="Edit" Clicked="PhysicianEditClicked"/>
             </Grid>
         </VerticalStackLayout>
 
