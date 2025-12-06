@@ -19,15 +19,16 @@ namespace Api.Healthcare.Enterprise
             var pat = Filebase.Current.Patients.FirstOrDefault(b => b.Id == id);
             return new PatientDTO(pat);
         }
-
         public PatientDTO? Delete(int id)
         {
             var toRemove = Filebase.Current.Patients.FirstOrDefault(b => b.Id == id);
+
             if (toRemove != null)
             {
-                Filebase.Current.Patients.Remove(toRemove);
+                Filebase.Current.Delete(id);  //Delete the file
             }
-            return new PatientDTO(toRemove);
+
+            return toRemove != null ? new PatientDTO(toRemove) : null;
         }
 
         public PatientDTO? AddOrUpdate(PatientDTO? patientDTO)

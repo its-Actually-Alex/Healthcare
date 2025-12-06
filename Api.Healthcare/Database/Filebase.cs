@@ -8,6 +8,7 @@ namespace Api.Healthcare.Database
     {
         private string _root;
         private string _patientRoot;
+        private string _appointmentRoot;
         private static Filebase _instance;
 
 
@@ -28,6 +29,21 @@ namespace Api.Healthcare.Database
         {
             _root = @"C:\temp";
             _patientRoot = $"{_root}\\Patients";
+            _appointmentRoot = $"{_root}\\Appointments";
+
+            // Create directories if they don't exist
+            if (!Directory.Exists(_root))
+            {
+                Directory.CreateDirectory(_root);
+            }
+            if (!Directory.Exists(_patientRoot))
+            {
+                Directory.CreateDirectory(_patientRoot);
+            }
+            if (!Directory.Exists(_appointmentRoot))
+            {
+                Directory.CreateDirectory(_appointmentRoot);
+            }
         }
 
         public int LastPatientKey
@@ -88,15 +104,83 @@ namespace Api.Healthcare.Database
                 return _pats;
             }
         }
-
-
-        public bool Delete(string type, string id)
+        public bool Delete(int id)
         {
-            //TODO: refer to AddOrUpdate for an idea of how you can implement this.
-            return true;
+            string path = $"{_patientRoot}\\{id}.json";
+
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                return true;
+            }
+
+            return false;
         }
+    
+
+    public int LastAppointmentKey
+        {
+            get
+            {
+                if (Appointments.Any())
+                {
+                    return Appointments.Select(x => x.Id).Max();
+                }
+                return 0;
+            }
+        }
+
+        public Appointment AddOrUpdate(Appointment apt)
+        {
+            //set up a new Id if one doesn't already exist
+            if (apt.Id <= 0)
+            {
+                apt.Id = LastAppointmentKey + 1;
+            }
+            //go to the right place
+            string path = $"{_appointmentRoot}\\{apt.Id}.json";
+            //if the item has been previously persisted
+            if (File.Exists(path))
+            {
+                //blow it up
+                File.Delete(path);
+            }
+            //write the file
+            File.WriteAllText(path, JsonConvert.SerializeObject(apt));
+            //return the item, which now has an id
+            return apt;
+        }
+
+        public List<Appointment> Appointments
+        {
+            get
+            {
+                var root = new DirectoryInfo(_appointmentRoot);
+                var _apts = new List<Appointment>();
+                foreach (var appointmentFile in root.GetFiles())
+                {
+                    var appointment = JsonConvert
+                        .DeserializeObject<Appointment>
+                        (File.ReadAllText(appointmentFile.FullName));
+                    if (appointment != null)
+                    {
+                        _apts.Add(appointment);
+                    }
+                }
+                return _apts;
+            }
+        }
+
+        public bool DeleteAppointment(int id)
+        {
+            string path = $"{_appointmentRoot}\\{id}.json";
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                return true;
+            }
+            return false;
+        }
+
     }
-
-
-
 }

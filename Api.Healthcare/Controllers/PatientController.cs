@@ -37,6 +37,12 @@ namespace Api.Healthcare.Controllers
             return new PatientEC().Delete(id);
         }
 
+        [HttpPost]
+        public PatientDTO? Post([FromBody] PatientDTO patient)
+        {
+            return new PatientEC().AddOrUpdate(patient);
+        }
+
         [HttpPost("Search")]
         public IEnumerable<PatientDTO?> Search([FromBody] QueryRequest query)
         {
