@@ -18,11 +18,10 @@ public partial class PatientView : ContentPage
         Shell.Current.GoToAsync("//MainPage");
     }
 
-    private void OkClicked(object sender, EventArgs e)
+    private async void OkClicked(object sender, EventArgs e)
     {
-        PatientServiceProxy.Current.AddOrUpdate(BindingContext as PatientDTO);
-
-        Shell.Current.GoToAsync("//MainPage");
+        await PatientServiceProxy.Current.AddOrUpdate(BindingContext as PatientDTO);
+        await Shell.Current.GoToAsync("//MainPage");
     }
 
     private void RemoveDiagnosisClicked(object sender, EventArgs e)

@@ -20,7 +20,8 @@ namespace Library.Healthcare.Models
             }
         }
 
-        public List<Diagnosis> Diagnoses { get; set; } = new List<Diagnosis> { };
+        public List<int> AppointmentIds { get; set; } = new List<int> { };
+        public List<int> DiagnosisIds { get; set; } = new List<int> { };
 
         public override string ToString()
         {
@@ -29,8 +30,8 @@ namespace Library.Healthcare.Models
 
         public void DetailedView()
         {
-            var diagnosisText = Diagnoses.Any()
-            ? string.Join("\n ", Diagnoses)
+            var diagnosisText = DiagnosisIds.Any()
+            ? string.Join("\n ", DiagnosisIds)
             : "No recent diagnoses";
             Console.WriteLine($"ID: {Id}\nName: {Name}\nAddress: {Address}\n" +
                 $"Birthdate: {Birthdate}\nGender: {Gender}\nRecent Diagnoses:\n{diagnosisText}\n");

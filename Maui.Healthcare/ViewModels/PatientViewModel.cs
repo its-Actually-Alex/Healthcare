@@ -41,7 +41,7 @@ namespace Maui.Healthcare.ViewModels
 
         private void DoEdit(PatientViewModel? pv)
         {
-            if(pv == null)
+            if (pv == null)
             {
                 return;
             }
@@ -53,5 +53,6 @@ namespace Maui.Healthcare.ViewModels
 
         public ICommand? DeleteCommand { get; set; }
         public ICommand EditCommand { get; set; }
+
     }
 }

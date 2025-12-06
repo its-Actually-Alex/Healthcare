@@ -7,7 +7,6 @@
     xmlns:view="clr-namespace:Maui.Healthcare.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="Maui.Healthcare">
-
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
@@ -17,8 +16,11 @@
         ContentTemplate="{DataTemplate view:PatientView}"
         Route="Patient" />
     <ShellContent
+        Title="AppointmentDetail"
+        ContentTemplate="{DataTemplate view:AppointmentView}"
+        Route="Appointment" />
+    <ShellContent
         Title="PhysicianDetail"
         ContentTemplate="{DataTemplate view:PhysicianView}"
         Route="Physician" />
-
 </Shell>

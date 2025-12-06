@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Maui.Healthcare.Views.AppointmentView"
+             Title="AppointmentView"
+             NavigatedTo="ContentPage_NavigatedTo">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10">
+            <Label
+                Text="Add/Edit Appointment"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1" 
+            />
+
+            <Label Text="Patient ID"/>
+            <Entry Text="{Binding PatientId}"/>
+
+            <Label Text="Physician ID"/>
+            <Entry Text="{Binding PhysicianId}"/>
+
+            <Label Text="Appointment Date"/>
+            <DatePicker Date="{Binding AppointmentDate}" Format="MM/dd/yyyy"/>
+
+            <Label Text="Appointment Time"/>
+            <TimePicker Time="{Binding AppointmentTime}"/>
+
+            <Label 
+                Text="Diagnoses" 
+                FontSize="18"
+                FontAttributes="Bold"
+                Margin="0,20,0,0"/>
+
+            <ListView
+                ItemsSource="{Binding DiagnosisIds}"
+                HeightRequest="150">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label 
+                                    Text="{Binding ., StringFormat='Diagnosis ID: {0}'}" 
+                                    Grid.Column="0"
+                                    VerticalOptions="Center"/>
+                                <Button 
+                                    Text="Remove" 
+                                    Grid.Column="1" 
+                                    Clicked="RemoveDiagnosisClicked"
+                                    CommandParameter="{Binding .}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Frame BackgroundColor="#d4d4d4" Padding="10">
+                <StackLayout>
+                    <Label Text="Add Diagnosis ID"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Entry
+                x:Name="NewDiagnosisEntry"
+                Grid.Column="0"
+                Placeholder="Enter Diagnosis ID"
+                Keyboard="Numeric"/>
+                        <Button
+                Text="Add"
+                Grid.Column="1"
+                Clicked="AddDiagnosisClicked"/>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+
+            <Button Text="OK" Clicked="OkClicked"/>
+            <Button Text="Cancel" Clicked="CancelClicked"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

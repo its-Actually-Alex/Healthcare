@@ -58,6 +58,17 @@ namespace Maui.Healthcare
         {
             (BindingContext as MainViewModel)?.ExpandCard();
         }
+
+        private void AppointmentAddClicked(object sender, EventArgs e)
+        {
+            Shell.Current.GoToAsync("//Appointment?appointmentId=0");
+        }
+
+        private void AppointmentEditClicked(object sender, EventArgs e)
+        {
+            var selectedId = (BindingContext as MainViewModel)?.SelectedAppointment?.Model?.Id ?? 0;
+            Shell.Current.GoToAsync($"//Appointment?appointmentId={selectedId}");
+        }
     }
 
 }

@@ -12,7 +12,7 @@ namespace CLI.Healthcare
             Console.WriteLine("Welcome to the healthcare thingy!");
             var cont = true;
 
-            List<Patient?> patients = PatientServiceProxy.Current.Patients;
+            //List<Patient?> patients = PatientServiceProxy.Current.Patients;
             List<Physician?> physicians = new List<Physician?>();
 
             do
