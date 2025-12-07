@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Maui.Healthcare.Views.AppointmentView"
+             x:Name="appointmentViewPage"
              Title="AppointmentView"
              NavigatedTo="ContentPage_NavigatedTo">
     <ScrollView>
@@ -13,18 +14,21 @@
             />
 
             <Label Text="Patient ID"/>
-            <Entry Text="{Binding PatientId}"/>
+            <Entry Text="{Binding PatientId, Mode=TwoWay}"/>
 
             <Label Text="Physician ID"/>
-            <Entry Text="{Binding PhysicianId}"/>
+            <Entry Text="{Binding PhysicianId, Mode=TwoWay}"/>
+
+            <Label Text="Room Number"/>
+            <Entry Text="{Binding RoomNumber, Mode=TwoWay}"/>
 
             <Label Text="Appointment Date"/>
-            <DatePicker Date="{Binding AppointmentDate}" Format="MM/dd/yyyy"/>
+            <DatePicker Date="{Binding Source={x:Reference appointmentViewPage}, Path=AppointmentDate}" Format="MM/dd/yyyy"/>
 
             <Label Text="Appointment Time"/>
-            <TimePicker Time="{Binding AppointmentTime}"/>
+            <TimePicker Time="{Binding Source={x:Reference appointmentViewPage}, Path=AppointmentTime}"/>
 
-            <Label 
+                <Label 
                 Text="Diagnoses" 
                 FontSize="18"
                 FontAttributes="Bold"

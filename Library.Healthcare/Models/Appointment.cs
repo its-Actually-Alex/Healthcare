@@ -16,6 +16,8 @@ namespace Library.Healthcare.Models
 
         public List<int> DiagnosisIds { get; set; } = new List<int>();
 
+        public int RoomNumber { get; set; }
+
         public string Display
         {
             get

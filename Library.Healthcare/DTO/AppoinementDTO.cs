@@ -10,6 +10,7 @@ namespace Library.Healthcare.DTO
         public int PhysicianId { get; set; }
         public DateTime AppointmentTime { get; set; }  // Changed from AppointmentDate
         public List<int> DiagnosisIds { get; set; }
+        public int RoomNumber { get; set; }
 
         public string Display
         {
@@ -21,7 +22,7 @@ namespace Library.Healthcare.DTO
 
         public override string ToString()
         {
-            return $"{Id}. Appointment on {AppointmentTime:MM/dd/yyyy hh:mm tt}";
+            return $"{Id}. Appointment on {AppointmentTime:MM/dd/yyyy hh:mm tt} - Room {RoomNumber}";
         }
         public AppointmentDTO(Appointment apt)
         {
@@ -30,6 +31,7 @@ namespace Library.Healthcare.DTO
             PhysicianId = apt.PhysicianId;
             AppointmentTime = apt.AppointmentTime;
             DiagnosisIds = apt.DiagnosisIds ?? new List<int>();
+            RoomNumber = apt.RoomNumber;
         }
 
         public AppointmentDTO()
@@ -47,6 +49,7 @@ namespace Library.Healthcare.DTO
                 PhysicianId = aptCopy.PhysicianId;
                 AppointmentTime = aptCopy.AppointmentTime;
                 DiagnosisIds = aptCopy.DiagnosisIds ?? new List<int>();
+                RoomNumber= aptCopy.RoomNumber;
             }
             else
             {

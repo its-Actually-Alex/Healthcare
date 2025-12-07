@@ -41,8 +41,21 @@ public partial class AppointmentView : ContentPage
         var dto = BindingContext as AppointmentDTO;
         if (dto != null)
         {
-            // Combine date and time into AppointmentTime
+            //Combine date and time into AppointmentTime
             dto.AppointmentTime = AppointmentDate.Date + AppointmentTime;
+
+            //Check for appointment conflicts, room and time
+            var existingAppointments = AppointmentServiceProxy.Current.Appointments;
+            var conflict = existingAppointments
+                .Where(a => a != null && a.Id != dto.Id)
+                .Any(a => a.AppointmentTime == dto.AppointmentTime && a.RoomNumber == dto.RoomNumber);
+
+            if (conflict)
+            {
+                await DisplayAlert("Conflict", $"Room {dto.RoomNumber} is already booked at this time. Please choose a different room or time.", "OK");
+                return;
+            }
+
             await AppointmentServiceProxy.Current.AddOrUpdate(dto);
         }
         await Shell.Current.GoToAsync("//MainPage");
