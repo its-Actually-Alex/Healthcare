@@ -20,8 +20,8 @@
             <!-- SEARCH BAR -->
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <Entry Grid.Column="0" Text="{Binding Query}"/>

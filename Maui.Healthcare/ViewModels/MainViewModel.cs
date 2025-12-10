@@ -77,15 +77,18 @@ namespace Maui.Healthcare.ViewModels
             }
         }
 
-        public void Refresh()
+        public async void Refresh()
         {
+            // Force reload patients from API
+            await PatientServiceProxy.Current.RefreshPatients();
+
             // Refresh patients
             patients.Clear();
             foreach (var patient in PatientServiceProxy.Current.Patients.Select(b => new PatientViewModel(b)))
             {
                 patients.Add(patient);
             }
-            ApplySort(); // Apply current sort after refreshing
+            ApplySort();
 
             // Refresh appointments
             appointments.Clear();
@@ -95,11 +98,24 @@ namespace Maui.Healthcare.ViewModels
             }
         }
 
-        public void Search()
+        public async void Search()
         {
-            var patientDTOs = PatientServiceProxy.Current.Search(new Library.Healthcare.Data.QueryRequest { Content = Query }).Result;
-            patients = new ObservableCollection<PatientViewModel?>(patientDTOs.Select(b => new PatientViewModel(b)));
-            NotifyPropertyChanged(nameof(Patients));
+            if (string.IsNullOrWhiteSpace(Query))
+            {
+                //If search is empty, refresh to show all patients
+                Refresh();
+                return;
+            }
+
+            //Get search results
+            var patientDTOs = await PatientServiceProxy.Current.Search(new Library.Healthcare.Data.QueryRequest { Content = Query });
+
+            //Clear and refresh list to searched patients
+            patients.Clear();
+            foreach (var patient in patientDTOs.Select(b => new PatientViewModel(b)))
+            {
+                patients.Add(patient);
+            }
         }
 
         public void Export()

@@ -91,8 +91,17 @@ public class PatientServiceProxy
     {
         var patPayload = await new WebRequestHandler().Post("/Patient/Search", query);
         var patFromServer = JsonConvert.DeserializeObject<List<PatientDTO?>>(patPayload);
-
         patients = patFromServer;
         return patients;
+    }
+
+    //Refresh the patient list from the API
+    public async Task RefreshPatients()
+    {
+        var patientsResponse = await new WebRequestHandler().Get("/Patient");
+        if (patientsResponse != null)
+        {
+            patients = JsonConvert.DeserializeObject<List<PatientDTO?>>(patientsResponse) ?? new List<PatientDTO?>();
+        }
     }
 }
