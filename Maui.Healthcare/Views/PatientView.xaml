@@ -49,27 +49,6 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <Frame BackgroundColor="#d4d4d4" Padding="10">
-            <StackLayout>
-                <Label Text="Add New Diagnosis"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Entry
-                        Grid.Column="0"
-                        Text="{Binding NewDiagnosis}"/>
-
-                    <Button
-                        Text="Add"
-                        Grid.Column="1"
-                        Clicked="AddDiagnosisClicked"/>
-                </Grid>
-            </StackLayout>
-        </Frame>
-
         <Button Text="OK" Clicked="OkClicked"/>
         <Button Text="Cancel" Clicked="CancelClicked"/>
     </VerticalStackLayout>

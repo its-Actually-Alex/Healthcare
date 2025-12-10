@@ -6,19 +6,19 @@
              NavigatedTo="ContentPage_NavigatedTo">
     <VerticalStackLayout>
         <Label
-            Text="Add A New Physician"
+            Text="Add/Edit Physician"
             Style="{StaticResource Headline}"
             SemanticProperties.HeadingLevel="Level1" 
         />
 
         <Label Text="Name"/>
-        <Entry Text="{Binding Name}"/>
+        <Entry Text="{Binding Name, Mode=TwoWay}"/>
         <Label Text="License Number"/>
-        <Entry Text="{Binding License}"/>
+        <Entry Text="{Binding License, Mode=TwoWay}"/>
         <Label Text="Graduation Date"/>
-        <Entry Text="{Binding GraduationDate}"/>
+        <Entry Text="{Binding GraduationDate, Mode=TwoWay}"/>
         <Label Text="Specialization"/>
-        <Entry Text="{Binding Specialization}"/>
+        <Entry Text="{Binding Specialization, Mode=TwoWay}"/>
         <Button Text="OK" Clicked="OkClicked"/>
         <Button Text="Cancel" Clicked="CancelClicked"/>
     </VerticalStackLayout>

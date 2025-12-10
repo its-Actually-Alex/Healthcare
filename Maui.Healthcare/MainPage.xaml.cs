@@ -17,11 +17,6 @@ namespace Maui.Healthcare
             Shell.Current.GoToAsync("//Patient?patientId=0");
         }
 
-        private void PhysicianAddClicked(object sender, EventArgs e)
-        {
-            Shell.Current.GoToAsync("//Physician?physicianId=0");
-        }
-
         private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
         {
             (BindingContext as MainViewModel)?.Refresh();
@@ -37,12 +32,6 @@ namespace Maui.Healthcare
             var selectedId = (BindingContext as MainViewModel)?.SelectedPatient?.Model?.Id ?? 0;
             Shell.Current.GoToAsync($"//Patient?patientId={selectedId}");
         }
-
-        /*private void PhysicianEditClicked(object sender, EventArgs e)
-        {
-            var selectedId = (BindingContext as MainViewModel)?.SelectedPhysician?.Model?.Id ?? 0;
-            Shell.Current.GoToAsync($"//Physician?physicianId={selectedId}");
-        }*/
 
         private void InlineEditClicked(object sender, EventArgs e)
         {
@@ -68,6 +57,17 @@ namespace Maui.Healthcare
         {
             var selectedId = (BindingContext as MainViewModel)?.SelectedAppointment?.Model?.Id ?? 0;
             Shell.Current.GoToAsync($"//Appointment?appointmentId={selectedId}");
+        }
+
+        private void PhysicianAddClicked(object sender, EventArgs e)
+        {
+            Shell.Current.GoToAsync("//Physician?physicianId=0");
+        }
+
+        private void PhysicianEditClicked(object sender, EventArgs e)
+        {
+            var selectedId = (BindingContext as MainViewModel)?.SelectedPhysician?.Model?.Id ?? 0;
+            Shell.Current.GoToAsync($"//Physician?physicianId={selectedId}");
         }
     }
 

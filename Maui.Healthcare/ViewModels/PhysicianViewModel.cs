@@ -1,23 +1,18 @@
-﻿using Library.Healthcare.Models;
+﻿using Library.Healthcare.DTO;
 using Library.Healthcare.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Maui.Healthcare.ViewModels
 {
     public class PhysicianViewModel
     {
-        public PhysicianViewModel() 
+        public PhysicianViewModel()
         {
-            Model = new Physician();
+            Model = new PhysicianDTO();
             SetUpCommands();
         }
 
-        public PhysicianViewModel(Physician? model)
+        public PhysicianViewModel(PhysicianDTO? model)
         {
             Model = model;
             SetUpCommands();
@@ -48,8 +43,7 @@ namespace Maui.Healthcare.ViewModels
             Shell.Current.GoToAsync($"//Physician?physicianId={selectedId}");
         }
 
-        public Physician? Model { get; set; }
-
+        public PhysicianDTO? Model { get; set; }
         public ICommand? DeleteCommand { get; set; }
         public ICommand EditCommand { get; set; }
     }

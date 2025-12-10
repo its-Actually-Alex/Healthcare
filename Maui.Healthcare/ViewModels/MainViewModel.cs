@@ -21,8 +21,9 @@ namespace Maui.Healthcare.ViewModels
         {
             InlinePatient = new PatientViewModel();
             InlineCardVisibility = Visibility.Collapsed;
-            ImportPath = @"C:\temp\data.json";
+            ImportPath = @"C:\temp\data.json"; //Persistence
 
+            //Initialize patients
             patients = new ObservableCollection<PatientViewModel?>
                     (PatientServiceProxy
                     .Current
@@ -36,6 +37,14 @@ namespace Maui.Healthcare.ViewModels
                     .Current
                     .Appointments
                     .Select(a => new AppointmentViewModel(a))
+                    );
+
+            // Initialize physicians
+            physicians = new ObservableCollection<PhysicianViewModel?>
+                    (PhysicianServiceProxy
+                    .Current
+                    .Physicians
+                    .Select(p => new PhysicianViewModel(p))
                     );
 
             ApplySort();
@@ -58,6 +67,17 @@ namespace Maui.Healthcare.ViewModels
                 return appointments;
             }
         }
+
+        private ObservableCollection<PhysicianViewModel?> physicians;
+        public ObservableCollection<PhysicianViewModel?> Physicians
+        {
+            get
+            {
+                return physicians;
+            }
+        }
+
+        public PhysicianViewModel? SelectedPhysician { get; set; }
 
         private Visibility inlineCardVisibility;
         public Visibility InlineCardVisibility
@@ -95,6 +115,13 @@ namespace Maui.Healthcare.ViewModels
             foreach (var appointment in AppointmentServiceProxy.Current.Appointments.Select(a => new AppointmentViewModel(a)))
             {
                 appointments.Add(appointment);
+            }
+
+            //Refresh physicians
+            physicians.Clear();
+            foreach (var physician in PhysicianServiceProxy.Current.Physicians.Select(p => new PhysicianViewModel(p)))
+            {
+                physicians.Add(physician);
             }
         }
 
@@ -273,6 +300,21 @@ namespace Maui.Healthcare.ViewModels
             foreach (var appointment in AppointmentServiceProxy.Current.Appointments.Select(a => new AppointmentViewModel(a)))
             {
                 appointments.Add(appointment);
+            }
+        }
+
+        public void DeletePhysician()
+        {
+            if (SelectedPhysician == null)
+            {
+                return;
+            }
+
+            PhysicianServiceProxy.Current.Delete(SelectedPhysician?.Model?.Id ?? 0);
+            physicians.Clear();
+            foreach (var physician in PhysicianServiceProxy.Current.Physicians.Select(p => new PhysicianViewModel(p)))
+            {
+                physicians.Add(physician);
             }
         }
 

@@ -16,7 +16,6 @@ namespace Library.Healthcare.Models
         public int License { get; set; }
         public string? GraduationDate { get; set; }
         public string? Specialization {  get; set; }
-        public List<Appointment> Appointments = new List<Appointment>();
 
         public string Display
         {
@@ -36,6 +35,7 @@ namespace Library.Healthcare.Models
 
         }
 
+        //Copy from ID
         public Physician(int id)
         {
             var physCopy = PhysicianServiceProxy.Current.Physicians.FirstOrDefault(b => (b?.Id ?? 0) == id);
@@ -46,7 +46,6 @@ namespace Library.Healthcare.Models
                 Name = physCopy.Name;
                 GraduationDate = physCopy.GraduationDate;
                 Specialization = physCopy.Specialization;
-                Appointments = physCopy.Appointments;
             }
         }
     }
