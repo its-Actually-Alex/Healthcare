@@ -9,6 +9,7 @@ namespace Api.Healthcare.Database
         private string _root;
         private string _patientRoot;
         private string _appointmentRoot;
+        private string _physicianRoot;
         private static Filebase _instance;
 
 
@@ -30,6 +31,7 @@ namespace Api.Healthcare.Database
             _root = @"C:\temp";
             _patientRoot = $"{_root}\\Patients";
             _appointmentRoot = $"{_root}\\Appointments";
+            _physicianRoot = $"{_root}\\Physicians";
 
             // Create directories if they don't exist
             if (!Directory.Exists(_root))
@@ -44,8 +46,13 @@ namespace Api.Healthcare.Database
             {
                 Directory.CreateDirectory(_appointmentRoot);
             }
+            if (!Directory.Exists(_physicianRoot))
+            {
+                Directory.CreateDirectory(_physicianRoot);
+            }
         }
 
+        //Patient methods
         public int LastPatientKey
         {
             get
@@ -60,20 +67,19 @@ namespace Api.Healthcare.Database
 
         public Patient AddOrUpdate(Patient pat)
         {
-            //set up a new Id if one doesn't already exist
+            //Create a new Id if one doesn't already exist
             if (pat.Id <= 0)
             {
                 pat.Id = LastPatientKey + 1;
             }
 
-            //go to the right place
+            //Find path to folder
             string path = $"{_patientRoot}\\{pat.Id}.json";
 
 
-            //if the item has been previously persisted
+            //Check if the item has been previously persisted
             if (File.Exists(path))
             {
-                //blow it up
                 File.Delete(path);
             }
 
@@ -117,8 +123,8 @@ namespace Api.Healthcare.Database
             return false;
         }
     
-
-    public int LastAppointmentKey
+        //Appointment methods
+        public int LastAppointmentKey
         {
             get
             {
@@ -132,22 +138,21 @@ namespace Api.Healthcare.Database
 
         public Appointment AddOrUpdate(Appointment apt)
         {
-            //set up a new Id if one doesn't already exist
+            //Create a new Id if one doesn't already exist
             if (apt.Id <= 0)
             {
                 apt.Id = LastAppointmentKey + 1;
             }
-            //go to the right place
+
+            //Navigate to correct place
             string path = $"{_appointmentRoot}\\{apt.Id}.json";
-            //if the item has been previously persisted
+            //Check if the item has been previously persisted
             if (File.Exists(path))
             {
-                //blow it up
                 File.Delete(path);
             }
-            //write the file
+
             File.WriteAllText(path, JsonConvert.SerializeObject(apt));
-            //return the item, which now has an id
             return apt;
         }
 
@@ -182,5 +187,68 @@ namespace Api.Healthcare.Database
             return false;
         }
 
+        public int LastPhysicianKey
+        {
+            get
+            {
+                if (Physicians.Any())
+                {
+                    return Physicians.Select(x => x.Id).Max();
+                }
+                return 0;
+            }
+        }
+
+        public Physician AddOrUpdate(Physician phy)
+        {
+            //Create a new Id if one doesn't already exist
+            if (phy.Id <= 0)
+            {
+                phy.Id = LastPhysicianKey + 1;
+            }
+
+            //Navigate to correct place
+            string path = $"{_physicianRoot}\\{phy.Id}.json";
+
+            //Check if the item has been previously persisted
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            File.WriteAllText(path, JsonConvert.SerializeObject(phy));
+            return phy;
+        }
+
+        public List<Physician> Physicians
+        {
+            get
+            {
+                var root = new DirectoryInfo(_physicianRoot);
+                var _phy = new List<Physician>();
+                foreach (var physicianFile in root.GetFiles())
+                {
+                    var physician = JsonConvert
+                        .DeserializeObject<Physician>
+                        (File.ReadAllText(physicianFile.FullName));
+                    if (physician != null)
+                    {
+                        _phy.Add(physician);
+                    }
+                }
+                return _phy;
+            }
+        }
+
+        public bool DeletePhysician(int id)
+        {
+            string path = $"{_physicianRoot}\\{id}.json";
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -25,6 +25,12 @@ namespace Api.Healthcare.Controllers
             return new PatientEC().GetPatients();
         }
 
+        [HttpPost("Search")]
+        public IEnumerable<PatientDTO?> Search([FromBody] QueryRequest query)
+        {
+            return new PatientEC().Search(query.Content);
+        }
+
         [HttpGet("{id}")]
         public PatientDTO? GetById(int id)
         {
@@ -41,12 +47,6 @@ namespace Api.Healthcare.Controllers
         public PatientDTO? Post([FromBody] PatientDTO patient)
         {
             return new PatientEC().AddOrUpdate(patient);
-        }
-
-        [HttpPost("Search")]
-        public IEnumerable<PatientDTO?> Search([FromBody] QueryRequest query)
-        {
-            return new PatientEC().Search(query.Content);
         }
     }
 }
